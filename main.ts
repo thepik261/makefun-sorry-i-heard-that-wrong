@@ -16,6 +16,10 @@ const outPath = process.env.ENTRY_OUTPUT ?? "/output/entry.txt";
 const outDir = dirname(outPath);
 
 mkdirSync(outDir, { recursive: true });
-chmodSync(outDir, 0o755);
+try {
+  chmodSync(outDir, 0o755);
+} catch {
+  /* directory already existed with its own permissions */
+}
 writeFileSync(outPath, LINE, "utf8");
 chmodSync(outPath, 0o644);
